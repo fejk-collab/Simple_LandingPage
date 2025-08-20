@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TODO: Add a compelling meta description for SEO -->
+    <meta name="description" content="Discover Monarch Roasters' single-origin, small-batch specialty coffee. Roasted to order and delivered fresh to elevate your daily ritual.">
+    
+    <!-- TODO: Update brand name in the title -->
+    <title>Monarch Roasters - Premium Specialty Coffee</title>
+
+    <!-- 
+      Preload the LCP (Largest Contentful Paint) image for performance.
+      - `fetchpriority="high"` gives it a hint to load sooner.
+      - `as="image"` tells the browser what it's preloading.
+    -->
+    <!-- TODO: Replace with your final high-resolution hero image URL -->
+    <link rel="preload" fetchpriority="high" as="image" href="https://images.pexels.com/photos/1695052/pexels-photo-1695052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" type="image/jpeg">
+    
+    <!-- Google Fonts for demo purposes - replace with your own font solution if needed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- 
+      ================================================================
+      styles.css
+      - In a production environment, this would be in a separate file.
+      - For this deliverable, it's included in the <head>.
+      ================================================================
+    -->
+    <style>
+        /* ---------------------------------- */
+        /* #VARIABLES & RESET                 */
+        /* ---------------------------------- */
+        :root {
+            /* Color Palette */
+            --color-espresso: #2B1D17;
+            --color-cream: #F4EFE9;
+            --color-copper: #C47A4A;
+            --color-copper-dark: #a8653a;
+            --color-off-black: #0E0D0C;
+
+            /* Typography */
+            /* Using system fallbacks for serif and sans-serif */
+            --font-serif: 'Playfair Display', 'Times New Roman', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            
+            /* Spacing & Sizing */
+            --spacing-xs: 0.5rem;   /* 8px */
+            --spacing-sm: 1rem;     /* 16px */
+            --spacing-md: 1.5rem;   /* 24px */
+            --spacing-lg: 2.5rem;   /* 40px */
+            --spacing-xl: 4rem;     /* 64px */
+
+            /* Transitions */
+            --transition-fast: 200ms ease-in-out;
+            --transition-med: 350ms ease-in-out;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-espresso);
+            color: var(--color-cream);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5 {
+            line-height: 1.2;
+            font-weight: 700;
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ---------------------------------- */
+        /* #HERO SECTION                      */
+        /* ---------------------------------- */
+        .hero {
+            position: relative;
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            min-height: 600px;
+            overflow: hidden;
+            padding: var(--spacing-md);
+        }
+
+        .hero__background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Performance hint for parallax effect */
+            will-change: transform;
+        }
+
+        .hero__background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero__background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Gradient overlay for text legibility */
+            background: linear-gradient(0deg, rgba(14, 13, 12, 0.7) 0%, rgba(43, 29, 23, 0.5) 50%, rgba(14, 13, 12, 0.7) 100%);
+        }
+
+        .hero__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: var(--color-cream);
+            max-width: 800px;
+        }
+        
+        /* Center content lower on mobile for better viewing */
+        @media (max-width: 768px) {
+            .hero__content {
+                margin-top: 10vh;
+            }
+        }
+
+        /* ---------------------------------- */
+        /* #HERO ELEMENTS & ANIMATIONS        */
+        /* ---------------------------------- */
+
+        /* Base state for entrance animations */
+        .hero__overline,
+        .hero__heading,
+        .hero__subheadline,
+        .hero__cta-group,
+        .hero__trust-row {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--transition-med), transform var(--transition-med);
+        }
+
+        /* When .is-visible is added by JS, trigger animations */
+        .hero.is-visible .hero__overline { transition-delay: 100ms; }
+        .hero.is-visible .hero__heading { transition-delay: 250ms; }
+        .hero.is-visible .hero__subheadline { transition-delay: 400ms; }
+        .hero.is-visible .hero__cta-group { transition-delay: 550ms; }
+        .hero.is-visible .hero__trust-row { transition-delay: 700ms; }
+
+        .hero.is-visible .hero__overline,
+        .hero.is-visible .hero__heading,
+        .hero.is-visible .hero__subheadline,
+        .hero.is-visible .hero__cta-group,
+        .hero.is-visible .hero__trust-row {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero__overline {
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--color-copper);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .hero__heading {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: var(--spacing-md);
+            /* Ensure h1 takes up space even before typing starts */
+            min-height: 1.2em; 
+        }
+
+        .hero__typing-caret {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: var(--color-copper);
+            animation: blink 0.8s infinite;
+            margin-left: var(--spacing-xs);
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero__subheadline {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            max-width: 35ch;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .hero__cta-group {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+            will-change: transform;
+            border: 2px solid transparent;
+        }
+        
+        .btn:focus-visible {
+            outline: 3px solid var(--color-cream);
+            outline-offset: 3px;
+        }
+
+        .btn--primary {
+            background-color: var(--color-copper);
+            color: var(--color-espresso);
+        }
+
+        .btn--primary:hover {
+            background-color: var(--color-copper-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn--secondary {
+            background-color: transparent;
+            border-color: var(--color-copper);
+            color: var(--color-copper);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn--secondary::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-cream);
+            transform: translateX(-101%);
+            transition: transform var(--transition-fast);
+        }
+
+        .btn--secondary:hover {
+            color: var(--color-cream);
+            border-color: var(--color-cream);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn--secondary:hover::after {
+            transform: translateX(0);
+        }
+
+        .hero__trust-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: rgba(244, 239, 233, 0.8); /* Slightly transparent cream */
+        }
+
+        .hero__trust-row svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .hero__scroll-cue {
+            position: absolute;
+            bottom: var(--spacing-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+
+        /* ---------------------------------- */
+        /* #ACCESSIBILITY & REDUCED MOTION    */
+        /* ---------------------------------- */
+        @media (prefers-reduced-motion: reduce) {
+            /* Disable all transitions and animations */
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            /* Instantly show all elements */
+            .hero__overline,
+            .hero__heading,
+            .hero__subheadline,
+            .hero__cta-group,
+            .hero__trust-row {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            /* Hide caret and scroll cue */
+            .hero__typing-caret,
+            .hero__scroll-cue {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero" id="hero-section">
+        <div class="hero__background" aria-hidden="true">
+            <!-- 
+              The image is loaded here. 
+              - `loading="eager"` is a hint that this is an important, above-the-fold image.
+              - `decoding="async"` allows the browser to render other content while this decodes.
+              - `alt` is empty because this is a purely decorative background image.
+            -->
+            <!-- TODO: Replace with your final high-resolution hero image URL -->
+            <img src="https://images.pexels.com/photos/1695052/pexels-photo-1695052.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
+                 alt=""
+                 loading="eager"
+                 decoding="async"
+                 width="1920" 
+                 height="1080">
+        </div>
+
+        <div class="hero__content">
+            <p class="hero__overline">Single-Origin, Small-Batch</p>
+            
+            <!-- 
+              For accessibility, the full sentence is in an aria-label.
+              The span that gets typed into is hidden from screen readers to prevent them
+              from reading character by character.
+            -->
+            <h1 class="hero__heading" aria-label="Brew Bold. Savor Slow.">
+                <span aria-hidden="true" id="typing-text"></span>
+                <span class="hero__typing-caret" id="typing-caret"></span>
+            </h1>
+
+            <p class="hero__subheadline">Roasted to order. Delivered fresh. Elevate your daily ritual.</p>
+
+            <div class="hero__cta-group">
+                <!-- TODO: Replace # with the primary CTA URL -->
+                <a href="#" class="btn btn--primary">Shop Coffee</a>
+                <!-- TODO: Replace # with the secondary CTA URL -->
+                <a href="#" class="btn btn--secondary">Explore Roasts</a>
+            </div>
+
+            <div class="hero__trust-row">
+                <span>50k+ bags shipped • 4.9★ average</span>
+                <!-- Secure checkout icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"></path></svg>
+            </div>
+        </div>
+        
+        <div class="hero__scroll-cue" aria-hidden="true">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M12 19L7 14M12 19L17 14" stroke="var(--color-cream)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- 
+      ================================================================
+      script.js
+      - In a production environment, this would be in a separate file.
+      - `defer` ensures it runs after the HTML is parsed and doesn't
+        block rendering.
+      ================================================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Configuration ---
+            const HERO_SECTION_ID = 'hero-section';
+            const TYPING_TEXT_ID = 'typing-text';
+            const TYPING_CARET_ID = 'typing-caret';
+            const TEXT_TO_TYPE = "Brew Bold. Savor Slow.";
+            const TYPING_SPEED_MS = 100;
+            const TYPING_DELAY_VARIANCE = 50; // Adds a natural feel
+            const PARALLAX_STRENGTH = 0.15; // How much the background moves
+
+            // --- Element Selection ---
+            const heroSection = document.getElementById(HERO_SECTION_ID);
+            const typingTextElement = document.getElementById(TYPING_TEXT_ID);
+            const typingCaretElement = document.getElementById(TYPING_CARET_ID);
+            const heroBackground = heroSection?.querySelector('.hero__background');
+
+            // --- State ---
+            let isTypingComplete = false;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // --- Functions ---
+
+            /**
+             * Handles the character-by-character typing animation.
+             */
+            function typeWriter() {
+                if (!typingTextElement || !typingCaretElement) return;
+
+                let i = 0;
+                function type() {
+                    if (i < TEXT_TO_TYPE.length) {
+                        typingTextElement.innerHTML += TEXT_TO_TYPE.charAt(i);
+                        i++;
+                        const randomDelay = Math.random() * TYPING_DELAY_VARIANCE * 2 - TYPING_DELAY_VARIANCE;
+                        setTimeout(type, TYPING_SPEED_MS + randomDelay);
+                    } else {
+                        // Typing is complete
+                        isTypingComplete = true;
+                        // Optional: make the caret stop blinking
+                        typingCaretElement.style.animation = 'none';
+                        typingCaretElement.style.opacity = '0';
+                    }
+                }
+                type();
+            }
+
+            /**
+             * Instantly displays the full text if motion is reduced.
+             */
+            function showFullText() {
+                if (typingTextElement) typingTextElement.textContent = TEXT_TO_TYPE;
+                if (typingCaretElement) typingCaretElement.style.display = 'none';
+            }
+            
+            /**
+             * Handles the subtle parallax effect on the background.
+             * This runs inside a requestAnimationFrame for performance.
+             */
+            function handleParallax() {
+                if (!heroBackground || prefersReducedMotion) return;
+                
+                const scrollY = window.scrollY;
+                // Only apply parallax when the hero section is in view
+                if (scrollY < window.innerHeight) {
+                    const offsetY = scrollY * PARALLAX_STRENGTH;
+                    heroBackground.style.transform = `translateY(${offsetY}px)`;
+                }
+            }
+
+            /**
+             * Sets up the Intersection Observer to trigger entrance animations.
+             */
+            function setupIntersectionObserver() {
+                if (!heroSection) return;
+
+                const observerCallback = (entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            heroSection.classList.add('is-visible');
+                            
+                            // Start typing animation only when the hero is visible
+                            if (prefersReducedMotion) {
+                                showFullText();
+                            } else {
+                                typeWriter();
+                            }
+                            
+                            // Stop observing once the animation is triggered
+                            observer.unobserve(heroSection);
+                        }
+                    });
+                };
+
+                const observerOptions = {
+                    root: null, // viewport
+                    threshold: 0.1 // Trigger when 10% is visible
+                };
+
+                const observer = new IntersectionObserver(observerCallback, observerOptions);
+                observer.observe(heroSection);
+            }
+
+
+            // --- Initialization ---
+            
+            // Check for necessary elements before running scripts
+            if (heroSection && typingTextElement && typingCaretElement && heroBackground) {
+                setupIntersectionObserver();
+                
+                // Add scroll listener for parallax, but only if motion is not reduced
+                if (!prefersReducedMotion) {
+                    window.addEventListener('scroll', () => {
+                        window.requestAnimationFrame(handleParallax);
+                    });
+                }
+            } else {
+                console.error('Hero section or its critical elements not found. Scripts will not run.');
+            }
+        });
+    </script>
+
+</body>
+</html>
