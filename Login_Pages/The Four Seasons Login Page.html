@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="summer" data-motion="true">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seasonal Login - Glassmorphism Design</title>
+    <meta name="description" content="Beautiful login page with seasonal themes and glassmorphism effects">
+    
+    <!-- 
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║  SEASONAL GLASSMORPHISM LOGIN PAGE                              ║
+    ║  Production-ready, accessible, performant                       ║
+    ║                                                                  ║
+    ║  CUSTOMIZATION:                                                 ║
+    ║  - Update theme colors in :root CSS variables                   ║
+    ║  - Replace Unsplash URLs in themeConfig (JS section)           ║
+    ║  - Adjust particle counts/speeds in particleConfigs             ║
+    ║  - Modify glassmorphism intensity via --glass-* variables       ║
+    ╚══════════════════════════════════════════════════════════════════╝
+    -->
+    
+    <!-- Google Fonts: Cinzel for headings, Montserrat for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Symbols (Icons) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 1: RESET & BASE
+           ═══════════════════════════════════════════════════════════════ */
+        
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 2: DESIGN TOKENS & THEME VARIABLES
+           ═══════════════════════════════════════════════════════════════ */
+        
+        :root {
+            /* Typography */
+            --font-family-body: 'Montserrat', sans-serif;
+            --font-family-heading: 'Cinzel', serif;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.75rem; /* Increased for heading */
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            /* Border radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1.25rem;
+            --radius-2xl: 1.5rem;
+            
+            /* Glassmorphism */
+            --glass-blur: 20px;
+            --glass-saturation: 180%;
+            --glass-opacity: 0.12;
+            --glass-border-opacity: 0.2;
+            
+            /* Animation */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Z-index layers */
+            --z-background: 1;
+            --z-particles: 2;
+            --z-content: 10;
+            --z-overlay: 20;
+            --z-modal: 30;
+        }
+        
+        /* Summer Theme (Default) */
+        [data-theme="summer"] {
+            --bg-primary: hsl(195, 100%, 95%);
+            --bg-overlay: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(20, 184, 166, 0.15));
+            --text-primary: hsl(209, 23%, 22%);
+            --text-muted: hsl(209, 14%, 37%);
+            --accent: hsl(38, 92%, 50%); /* Golden */
+            --accent-hover: hsl(38, 92%, 45%);
+            --accent-contrast: white;
+            --secondary: hsl(172, 72%, 47%); /* Aqua */
+            --ring: hsla(38, 92%, 50%, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.12);
+            --card-border: rgba(255, 255, 255, 0.3);
+            --shadow: rgba(245, 158, 11, 0.15);
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --particle-color: rgba(255, 213, 79, 0.6);
+        }
+        
+        /* Autumn Theme */
+        [data-theme="autumn"] {
+            --bg-primary: hsl(25, 45%, 94%);
+            --bg-overlay: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(139, 94, 52, 0.2));
+            --text-primary: hsl(25, 28%, 20%);
+            --text-muted: hsl(25, 18%, 35%);
+            --accent: hsl(25, 95%, 53%); /* Amber */
+            --accent-hover: hsl(25, 95%, 48%);
+            --accent-contrast: white;
+            --secondary: hsl(25, 44%, 37%); /* Brown */
+            --ring: hsla(25, 95%, 53%, 0.5);
+            --card-bg: rgba(255, 251, 245, 0.11);
+            --card-border: rgba(249, 115, 22, 0.25);
+            --shadow: rgba(139, 94, 52, 0.2);
+            --input-bg: rgba(255, 255, 255, 0.07);
+            --particle-color: rgba(239, 68, 68, 0.7);
+        }
+        
+        /* Winter Theme */
+        [data-theme="winter"] {
+            --bg-primary: hsl(213, 27%, 96%);
+            --bg-overlay: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(31, 41, 55, 0.18));
+            --text-primary: hsl(215, 25%, 18%);
+            --text-muted: hsl(215, 15%, 33%);
+            --accent: hsl(213, 94%, 68%); /* Icy blue */
+            --accent-hover: hsl(213, 94%, 63%);
+            --accent-contrast: hsl(215, 25%, 18%);
+            --secondary: hsl(215, 25%, 18%); /* Midnight */
+            --ring: hsla(213, 94%, 68%, 0.5);
+            --card-bg: rgba(248, 250, 252, 0.1);
+            --card-border: rgba(148, 163, 184, 0.3);
+            --shadow: rgba(31, 41, 55, 0.25);
+            --input-bg: rgba(255, 255, 255, 0.06);
+            --particle-color: rgba(219, 234, 254, 0.8);
+        }
+        
+        /* Spring Theme */
+        [data-theme="spring"] {
+            --bg-primary: hsl(142, 45%, 96%);
+            --bg-overlay: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(244, 114, 182, 0.12));
+            --text-primary: hsl(142, 28%, 20%);
+            --text-muted: hsl(142, 18%, 35%);
+            --accent: hsl(142, 71%, 45%); /* Fresh green */
+            --accent-hover: hsl(142, 71%, 40%);
+            --accent-contrast: white;
+            --secondary: hsl(327, 87%, 67%); /* Blossom pink */
+            --ring: hsla(142, 71%, 45%, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.11);
+            --card-border: rgba(34, 197, 94, 0.2);
+            --shadow: rgba(34, 197, 94, 0.15);
+            --input-bg: rgba(255, 255, 255, 0.07);
+            --particle-color: rgba(251, 207, 232, 0.7);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 3: BASE STYLES
+           ═══════════════════════════════════════════════════════════════ */
+        
+        html {
+            font-size: 16px;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family-body);
+            font-size: var(--font-size-base);
+            line-height: 1.5;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: color var(--transition-base);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 4: BACKGROUND SYSTEM
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .hero-background {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-background);
+            overflow: hidden;
+        }
+        
+        .hero-background__image {
+            position: absolute;
+            inset: -5%;
+            width: 110%;
+            height: 110%;
+            object-fit: cover;
+            will-change: transform;
+            transition: opacity var(--transition-slow);
+        }
+        
+        /* Gentle zoom animation */
+        [data-motion="true"] .hero-background__image {
+            animation: gentleZoom 30s ease-in-out infinite alternate;
+        }
+        
+        @keyframes gentleZoom {
+            0% { transform: scale(1) translate3d(0, 0, 0); }
+            100% { transform: scale(1.05) translate3d(-1%, -1%, 0); }
+        }
+        
+        .hero-background__overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(1px);
+            transition: background var(--transition-slow);
+        }
+        
+        /* Additional gradient for text readability */
+        .hero-background__gradient {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 5: PARTICLE SYSTEM
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .particles-container {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-particles);
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            will-change: transform, opacity;
+            transition: opacity var(--transition-base);
+        }
+        
+        /* Summer particles (sun flares) */
+        [data-theme="summer"] .particle {
+            width: 4px;
+            height: 4px;
+            background: var(--particle-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--particle-color);
+        }
+        
+        /* Autumn particles (leaves) */
+        [data-theme="autumn"] .particle {
+            width: 15px;
+            height: 15px;
+            background: var(--particle-color);
+            clip-path: polygon(50% 0%, 60% 35%, 100% 35%, 75% 60%, 85% 100%, 50% 75%, 15% 100%, 25% 60%, 0% 35%, 40% 35%);
+        }
+        
+        /* Winter particles (snowflakes) */
+        [data-theme="winter"] .particle {
+            width: 8px;
+            height: 8px;
+            background: var(--particle-color);
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Spring particles (petals) */
+        [data-theme="spring"] .particle {
+            width: 12px;
+            height: 12px;
+            background: var(--particle-color);
+            border-radius: 0 100% 0 100%;
+        }
+        
+        /* Disable particles for reduced motion */
+        [data-motion="false"] .particle,
+        @media (prefers-reduced-motion: reduce) {
+            animation: none !important;
+            display: none;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 6: MAIN CONTAINER & GLASSMORPHISM CARD
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .container {
+            position: relative;
+            z-index: var(--z-content);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 460px;
+            padding: var(--spacing-2xl);
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-2xl);
+            box-shadow: 
+                0 20px 60px -20px var(--shadow),
+                0 10px 40px -15px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-base);
+            position: relative;
+        }
+        
+        /* Fallback for browsers without backdrop-filter support */
+        @supports not (backdrop-filter: blur(1px)) {
+            .login-card {
+                background: rgba(255, 255, 255, 0.95);
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 7: THEME SWITCHER
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .theme-switcher {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-xs);
+            background: var(--input-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+        }
+        
+        .theme-option {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-xs);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            font-family: var(--font-family-body);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .theme-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .theme-option.active {
+            background: var(--accent);
+            color: var(--accent-contrast);
+            font-weight: 500;
+        }
+        
+        .theme-option:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+        
+        .theme-option__icon {
+            font-size: 24px;
+            line-height: 1;
+        }
+        
+        .theme-option__label {
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 8: MOTION TOGGLE
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .motion-toggle {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            z-index: var(--z-overlay);
+        }
+        
+        .motion-toggle__button {
+            padding: var(--spacing-sm);
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .motion-toggle__button .material-symbols-outlined {
+            font-size: 24px;
+        }
+        
+        .motion-toggle__button:hover {
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+        
+        .motion-toggle__button:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 9: FORM COMPONENTS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--spacing-md);
+            background: var(--accent);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem; /* Increased size for icons */
+            color: var(--accent-contrast);
+            font-family: var(--font-family-heading);
+            font-weight: 700;
+            transition: all var(--transition-base);
+        }
+        
+        .login-title {
+            font-family: var(--font-family-heading);
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+            min-height: 2.5rem; /* Reserve space for animation */
+        }
+        
+        /* Character-by-character animation styles */
+        .login-title .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        
+        .login-title .char.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .login-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-body);
+            transition: all var(--transition-fast);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+        
+        .form-input:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px var(--ring);
+        }
+        
+        .form-input[aria-invalid="true"] {
+            border-color: #ef4444;
+        }
+        
+        .form-input-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color var(--transition-fast);
+        }
+
+        .password-toggle .material-symbols-outlined {
+            font-size: 20px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--text-primary);
+        }
+        
+        .password-toggle:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+            border-radius: var(--radius-sm);
+        }
+        
+        .form-error {
+            display: none;
+            font-size: var(--font-size-sm);
+            color: #ef4444;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .form-error.visible {
+            display: block;
+        }
+        
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* NEW: Custom checkbox styles */
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            user-select: none;
+        }
+        
+        .checkbox-input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkbox-custom {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .checkbox-wrapper:hover .checkbox-custom {
+            border-color: var(--accent);
+        }
+
+        .checkbox-input:focus-visible + .checkbox-custom {
+            box-shadow: 0 0 0 3px var(--ring);
+        }
+
+        .checkbox-input:checked + .checkbox-custom {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .checkbox-custom .checkmark {
+            stroke: var(--accent-contrast);
+            stroke-width: 2;
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            transition: stroke-dashoffset 0.2s ease-in-out;
+        }
+
+        .checkbox-input:checked + .checkbox-custom .checkmark {
+            stroke-dashoffset: 0;
+        }
+        
+        .form-link {
+            font-size: var(--font-size-sm);
+            color: var(--accent);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        .form-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+        
+        .form-link:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+            border-radius: var(--radius-sm);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           LAYER 10: BUTTONS
+           ═══════════════════════════════════════════════════════════ */
+        
+        .btn {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            font-family: var(--font-family-body);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--accent-contrast);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            margin-top: var(--spacing-sm);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .btn-secondary .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+        
+        .btn.loading .spinner {
+            display: block;
+        }
+        
+        .btn.loading .btn-text {
+            display: none;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 11: FOOTER
+           ═══════════════════════════════════════════════════════════════ */
+        
+        .login-footer {
+            text-align: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--card-border);
+        }
+        
+        .footer-text {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 12: RESPONSIVE DESIGN
+           ═══════════════════════════════════════════════════════════════ */
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .login-card {
+                padding: var(--spacing-xl);
+            }
+            
+            .theme-option__label {
+                display: none;
+            }
+            
+            .theme-switcher {
+                gap: 2px;
+                padding: 2px;
+            }
+            
+            .theme-option {
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .login-card {
+                padding: var(--spacing-lg);
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           LAYER 13: ACCESSIBILITY ENHANCEMENTS
+           ═══════════════════════════════════════════════════════════════ */
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .hero-background__image {
+                animation: none;
+            }
+            
+            .particles-container {
+                display: none;
+            }
+        }
+        
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .login-card {
+                background: rgba(255, 255, 255, 0.95);
+                border: 2px solid var(--text-primary);
+            }
+            
+            .form-input {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background layers -->
+    <div class="hero-background">
+        <img 
+            class="hero-background__image" 
+            id="backgroundImage"
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80&fit=crop" 
+            alt=""
+            role="presentation"
+        >
+        <div class="hero-background__overlay"></div>
+        <div class="hero-background__gradient"></div>
+    </div>
+    
+    <!-- Particle container -->
+    <div class="particles-container" id="particlesContainer" aria-hidden="true"></div>
+    
+    <!-- Motion toggle -->
+    <div class="motion-toggle">
+        <button 
+            class="motion-toggle__button" 
+            id="motionToggle"
+            aria-label="Toggle animations"
+            title="Toggle animations"
+        >
+            <!-- Icons will be injected by JS -->
+        </button>
+    </div>
+    
+    <!-- Main content -->
+    <main class="container">
+        <div class="login-card">
+            <!-- Theme switcher -->
+            <div class="theme-switcher" role="group" aria-label="Select theme">
+                <button 
+                    class="theme-option active" 
+                    data-theme="summer"
+                    aria-pressed="true"
+                    aria-label="Summer theme"
+                >
+                    <span class="material-symbols-outlined theme-option__icon">light_mode</span>
+                    <span class="theme-option__label">Summer</span>
+                </button>
+                <button 
+                    class="theme-option" 
+                    data-theme="autumn"
+                    aria-pressed="false"
+                    aria-label="Autumn theme"
+                >
+                    <span class="material-symbols-outlined theme-option__icon">eco</span>
+                    <span class="theme-option__label">Autumn</span>
+                </button>
+                <button 
+                    class="theme-option" 
+                    data-theme="winter"
+                    aria-pressed="false"
+                    aria-label="Winter theme"
+                >
+                    <span class="material-symbols-outlined theme-option__icon">ac_unit</span>
+                    <span class="theme-option__label">Winter</span>
+                </button>
+                <button 
+                    class="theme-option" 
+                    data-theme="spring"
+                    aria-pressed="false"
+                    aria-label="Spring theme"
+                >
+                    <span class="material-symbols-outlined theme-option__icon">local_florist</span>
+                    <span class="theme-option__label">Spring</span>
+                </button>
+            </div>
+            
+            <!-- Login header -->
+            <header class="login-header">
+                <div class="logo" id="logo" aria-hidden="true">
+                    <span class="material-symbols-outlined">light_mode</span>
+                </div>
+                <h1 class="login-title" id="loginTitle">Welcome back</h1>
+                <p class="login-subtitle">Sign in to continue to your account</p>
+            </header>
+            
+            <!-- Login form -->
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        class="form-input"
+                        placeholder="you@example.com"
+                        required
+                        aria-describedby="emailError"
+                        aria-invalid="false"
+                        autocomplete="email"
+                    >
+                    <div id="emailError" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="form-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                            minlength="8"
+                            aria-describedby="passwordError"
+                            aria-invalid="false"
+                            autocomplete="current-password"
+                        >
+                        <button 
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Toggle password visibility"
+                        >
+                            <!-- Icons will be injected by JS -->
+                        </button>
+                    </div>
+                    <div id="passwordError" class="form-error" role="alert" aria-live="polite"></div>
+                </div>
+                
+                <div class="form-row">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="remember" name="remember" class="checkbox-input">
+                        <span class="checkbox-custom">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="checkmark" d="M3 8L6.5 11.5L13 5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="checkbox-label">Remember me</span>
+                    </label>
+                    <a href="#" class="form-link">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span class="btn-text">Sign in</span>
+                </button>
+                
+                <button type="button" class="btn btn-secondary">
+                    <svg class="google-icon" width="20" height="20" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.20455c0-.63864-.05727-1.25455-.16364-1.84091H9v3.48182h4.84455c-.20818 1.125-.84273 2.07818-1.77636 2.71636v2.25818h2.90818c1.70182-1.56682 2.68727-3.87409 2.68727-6.61545z"/><path fill="#34A853" d="M9 18c2.43 0 4.46727-.80545 5.95636-2.18182l-2.90818-2.25818c-.80545.54-1.83636.86136-3.04818.86136-2.34455 0-4.32818-1.58182-5.03545-3.71045H.957273v2.33182C2.71818 15.93318 5.59545 18 9 18z"/><path fill="#FBBC05" d="M3.96455 10.71c-.18-.54-.28273-1.11682-.28273-1.71s.10273-1.17.28273-1.71V4.95818H.957273C.347727 6.17182 0 7.54773 0 9s.347727 2.82818.957273 4.04182l3.00727-2.33182z"/><path fill="#EA4335" d="M9 3.57955c1.32182 0 2.50773.45455 3.44091 1.34591l2.58182-2.58182C13.4636.891818 11.4259 0 9 0 5.59545 0 2.71818 2.06682.957273 4.95818l3.00727 2.33182C4.67182 5.16136 6.65545 3.57955 9 3.57955z"/></svg>
+                    <span>Continue with Google</span>
+                </button>
+            </form>
+            
+            <!-- Footer -->
+            <footer class="login-footer">
+                <p class="footer-text">
+                    Don't have an account? 
+                    <a href="#" class="form-link">Create account</a>
+                </p>
+            </footer>
+        </div>
+    </main>
+    
+    <script>
+        /* ═══════════════════════════════════════════════════════════════
+           THEME CONFIGURATION
+           ═══════════════════════════════════════════════════════════════ */
+        
+        const themeConfig = {
+            summer: {
+                name: 'summer',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80&fit=crop',
+                particles: { count: 50, speed: 0.5, parallax: true, opacity: 0.6 }
+            },
+            autumn: {
+                name: 'autumn',
+                image: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                particles: { count: 40, speed: 1.2, parallax: false, opacity: 0.7, sway: true }
+            },
+            winter: {
+                name: 'winter',
+                image: 'https://images.unsplash.com/photo-1483664852095-d6cc6870702d?w=1920&q=80&fit=crop',
+                particles: { count: 60, speed: 0.8, parallax: true, opacity: 0.8 }
+            },
+            spring: {
+                name: 'spring',
+                image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80&fit=crop',
+                particles: { count: 45, speed: 0.6, parallax: false, opacity: 0.7, sway: true }
+            }
+        };
+
+        const ICONS = {
+            play: `<span class="material-symbols-outlined">play_arrow</span>`,
+            pause: `<span class="material-symbols-outlined">pause</span>`,
+            eye: `<span class="material-symbols-outlined">visibility</span>`,
+            eyeOff: `<span class="material-symbols-outlined">visibility_off</span>`
+        };
+        
+        /* ═══════════════════════════════════════════════════════════════
+           STATE MANAGEMENT
+           ═══════════════════════════════════════════════════════════════ */
+        
+        class AppState {
+            constructor() {
+                this.currentTheme = this.loadTheme();
+                this.motionEnabled = this.loadMotionPreference();
+                this.particles = [];
+                this.animationFrame = null;
+                this.mouseX = 0;
+                this.mouseY = 0;
+            }
+            
+            loadTheme() {
+                const saved = localStorage.getItem('selectedTheme');
+                if (saved && themeConfig[saved]) return saved;
+                const month = new Date().getMonth();
+                if (month >= 2 && month <= 4) return 'spring';
+                if (month >= 5 && month <= 7) return 'summer';
+                if (month >= 8 && month <= 10) return 'autumn';
+                return 'winter';
+            }
+            
+            loadMotionPreference() {
+                const saved = localStorage.getItem('motionEnabled');
+                if (saved !== null) return saved === 'true';
+                return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            }
+            
+            saveTheme(theme) {
+                this.currentTheme = theme;
+                localStorage.setItem('selectedTheme', theme);
+            }
+            
+            saveMotionPreference(enabled) {
+                this.motionEnabled = enabled;
+                localStorage.setItem('motionEnabled', enabled.toString());
+            }
+        }
+        
+        const appState = new AppState();
+        
+        /* ═══════════════════════════════════════════════════════════════
+           PARTICLE SYSTEM
+           ═══════════════════════════════════════════════════════════════ */
+        
+        class Particle {
+            constructor(container, config) {
+                this.container = container;
+                this.config = config;
+                this.element = document.createElement('div');
+                this.element.className = 'particle';
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.z = Math.random();
+                this.vx = (Math.random() - 0.5) * config.speed;
+                this.vy = Math.random() * config.speed + config.speed;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 2;
+                const scale = 0.5 + Math.random() * 0.5;
+                this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) scale(${scale})`;
+                this.element.style.opacity = config.opacity * (0.5 + Math.random() * 0.5);
+                container.appendChild(this.element);
+            }
+            
+            update(deltaTime, mouseX, mouseY) {
+                this.vy += deltaTime * 0.01;
+                if (this.config.sway) {
+                    this.vx = Math.sin(Date.now() * 0.001 + this.x * 0.01) * this.config.speed;
+                }
+                this.x += this.vx * deltaTime * 0.1;
+                this.y += this.vy * deltaTime * 0.1;
+                this.rotation += this.rotationSpeed * deltaTime * 0.1;
+                if (this.config.parallax) {
+                    const parallaxX = (mouseX - 0.5) * 20 * this.z;
+                    const parallaxY = (mouseY - 0.5) * 20 * this.z;
+                    this.element.style.transform = `translate3d(${this.x + parallaxX}px, ${this.y + parallaxY}px, 0) rotate(${this.rotation}deg) scale(${0.5 + this.z * 0.5})`;
+                }
+                if (this.y > window.innerHeight + 50) {
+                    this.y = -50;
+                    this.x = Math.random() * window.innerWidth;
+                }
+                if (this.x > window.innerWidth + 50) this.x = -50;
+                if (this.x < -50) this.x = window.innerWidth + 50;
+                if (!this.config.parallax) {
+                    this.element.style.transform = `translate3d(${this.x}px, ${this.y}px, 0) rotate(${this.rotation}deg)`;
+                }
+            }
+            
+            destroy() {
+                this.element.remove();
+            }
+        }
+        
+        class ParticleSystem {
+            constructor(container) {
+                this.container = container;
+                this.particles = [];
+                this.lastTime = performance.now();
+                this.running = false;
+            }
+            
+            init(config) {
+                this.clear();
+                if (!appState.motionEnabled) return;
+                for (let i = 0; i < config.count; i++) {
+                    this.particles.push(new Particle(this.container, config));
+                }
+                this.running = true;
+                this.animate();
+            }
+            
+            animate() {
+                if (!this.running) return;
+                const currentTime = performance.now();
+                const deltaTime = currentTime - this.lastTime;
+                this.lastTime = currentTime;
+                this.particles.forEach(p => p.update(deltaTime, appState.mouseX, appState.mouseY));
+                appState.animationFrame = requestAnimationFrame(() => this.animate());
+            }
+            
+            pause() {
+                this.running = false;
+                if (appState.animationFrame) cancelAnimationFrame(appState.animationFrame);
+            }
+            
+            resume() {
+                if (!appState.motionEnabled) return;
+                this.running = true;
+                this.lastTime = performance.now();
+                this.animate();
+            }
+            
+            clear() {
+                this.pause();
+                this.particles.forEach(p => p.destroy());
+                this.particles = [];
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           THEME MANAGER
+           ═══════════════════════════════════════════════════════════════ */
+        
+        class ThemeManager {
+            constructor() {
+                this.root = document.documentElement;
+                this.backgroundImage = document.getElementById('backgroundImage');
+                this.themeButtons = document.querySelectorAll('.theme-option');
+                this.particleSystem = new ParticleSystem(document.getElementById('particlesContainer'));
+                this.logo = document.getElementById('logo');
+            }
+            
+            init() {
+                this.applyTheme(appState.currentTheme);
+                this.themeButtons.forEach(button => {
+                    button.addEventListener('click', () => this.switchTheme(button.dataset.theme));
+                });
+                const config = themeConfig[appState.currentTheme];
+                if (config && appState.motionEnabled) {
+                    this.particleSystem.init(config.particles);
+                }
+            }
+            
+            applyTheme(themeName) {
+                const theme = themeConfig[themeName];
+                if (!theme) return;
+                this.root.setAttribute('data-theme', themeName);
+                const newImage = new Image();
+                newImage.onload = () => {
+                    this.backgroundImage.style.opacity = '0';
+                    setTimeout(() => {
+                        this.backgroundImage.src = theme.image;
+                        this.backgroundImage.style.opacity = '1';
+                    }, 300);
+                };
+                newImage.src = theme.image;
+                this.themeButtons.forEach(button => {
+                    const isActive = button.dataset.theme === themeName;
+                    button.classList.toggle('active', isActive);
+                    button.setAttribute('aria-pressed', isActive.toString());
+                    if (isActive) {
+                        const iconElement = button.querySelector('.theme-option__icon');
+                        if (iconElement && this.logo) {
+                            this.logo.innerHTML = `<span class="material-symbols-outlined">${iconElement.textContent}</span>`;
+                        }
+                    }
+                });
+                this.particleSystem.clear();
+                if (appState.motionEnabled) {
+                    setTimeout(() => this.particleSystem.init(theme.particles), 300);
+                }
+            }
+            
+            switchTheme(themeName) {
+                if (themeName === appState.currentTheme) return;
+                appState.saveTheme(themeName);
+                this.applyTheme(themeName);
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           FORM VALIDATION
+           ═══════════════════════════════════════════════════════════════ */
+        
+        class FormValidator {
+            constructor(form) {
+                this.form = form;
+                this.emailInput = form.querySelector('#email');
+                this.passwordInput = form.querySelector('#password');
+                this.emailError = form.querySelector('#emailError');
+                this.passwordError = form.querySelector('#passwordError');
+                this.submitBtn = form.querySelector('#submitBtn');
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                this.emailInput.addEventListener('blur', () => this.validateEmail());
+                this.passwordInput.addEventListener('blur', () => this.validatePassword());
+                this.emailInput.addEventListener('input', () => this.clearError(this.emailInput, this.emailError));
+                this.passwordInput.addEventListener('input', () => this.clearError(this.passwordInput, this.passwordError));
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+            }
+            
+            validateEmail() {
+                const email = this.emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email) {
+                    this.showError(this.emailInput, this.emailError, 'Email is required');
+                    return false;
+                } else if (!emailRegex.test(email)) {
+                    this.showError(this.emailInput, this.emailError, 'Please enter a valid email');
+                    return false;
+                }
+                this.clearError(this.emailInput, this.emailError);
+                return true;
+            }
+            
+            validatePassword() {
+                const password = this.passwordInput.value;
+                if (!password) {
+                    this.showError(this.passwordInput, this.passwordError, 'Password is required');
+                    return false;
+                } else if (password.length < 8) {
+                    this.showError(this.passwordInput, this.passwordError, 'Must be at least 8 characters');
+                    return false;
+                }
+                this.clearError(this.passwordInput, this.passwordError);
+                return true;
+            }
+            
+            showError(input, errorElement, message) {
+                input.setAttribute('aria-invalid', 'true');
+                errorElement.textContent = message;
+                errorElement.classList.add('visible');
+            }
+            
+            clearError(input, errorElement) {
+                input.setAttribute('aria-invalid', 'false');
+                errorElement.textContent = '';
+                errorElement.classList.remove('visible');
+            }
+            
+            async handleSubmit(e) {
+                e.preventDefault();
+                const isEmailValid = this.validateEmail();
+                const isPasswordValid = this.validatePassword();
+                if (!isEmailValid || !isPasswordValid) return;
+                this.submitBtn.classList.add('loading');
+                this.submitBtn.disabled = true;
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                this.submitBtn.classList.remove('loading');
+                this.submitBtn.disabled = false;
+                console.log('Login successful!', { email: this.emailInput.value, remember: this.form.querySelector('#remember').checked });
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           UI INTERACTIONS
+           ═══════════════════════════════════════════════════════════════ */
+
+        class PasswordToggle {
+            constructor() {
+                this.passwordInput = document.getElementById('password');
+                this.toggleBtn = document.getElementById('passwordToggle');
+                this.toggleBtn.innerHTML = ICONS.eye;
+                this.toggleBtn.addEventListener('click', () => this.toggle());
+            }
+            
+            toggle() {
+                const isPassword = this.passwordInput.type === 'password';
+                this.passwordInput.type = isPassword ? 'text' : 'password';
+                this.toggleBtn.innerHTML = isPassword ? ICONS.eyeOff : ICONS.eye;
+                this.toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+            }
+        }
+        
+        class MotionControl {
+            constructor(themeManager) {
+                this.themeManager = themeManager;
+                this.toggleBtn = document.getElementById('motionToggle');
+                this.init();
+            }
+            
+            init() {
+                this.updateUI();
+                this.toggleBtn.addEventListener('click', () => this.toggle());
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) this.themeManager.particleSystem.pause();
+                    else if (appState.motionEnabled) this.themeManager.particleSystem.resume();
+                });
+            }
+            
+            toggle() {
+                appState.saveMotionPreference(!appState.motionEnabled);
+                this.updateUI();
+                if (appState.motionEnabled) {
+                    const config = themeConfig[appState.currentTheme];
+                    this.themeManager.particleSystem.init(config.particles);
+                } else {
+                    this.themeManager.particleSystem.clear();
+                }
+            }
+            
+            updateUI() {
+                document.documentElement.setAttribute('data-motion', appState.motionEnabled.toString());
+                this.toggleBtn.innerHTML = appState.motionEnabled ? ICONS.pause : ICONS.play;
+                this.toggleBtn.setAttribute('aria-label', appState.motionEnabled ? 'Disable animations' : 'Enable animations');
+            }
+        }
+        
+        class ParallaxEffect {
+            constructor() {
+                this.backgroundImage = document.getElementById('backgroundImage');
+                this.throttleTimer = null;
+                this.init();
+            }
+            
+            init() {
+                document.addEventListener('mousemove', (e) => {
+                    if (!appState.motionEnabled) return;
+                    if (!this.throttleTimer) {
+                        this.throttleTimer = setTimeout(() => {
+                            appState.mouseX = e.clientX / window.innerWidth;
+                            appState.mouseY = e.clientY / window.innerHeight;
+                            const x = (appState.mouseX - 0.5) * 10;
+                            const y = (appState.mouseY - 0.5) * 10;
+                            this.backgroundImage.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.05)`;
+                            this.throttleTimer = null;
+                        }, 16);
+                    }
+                });
+                
+                document.addEventListener('mouseleave', () => {
+                    if (!appState.motionEnabled) return;
+                    this.backgroundImage.style.transform = 'translate3d(0, 0, 0) scale(1.05)';
+                });
+            }
+        }
+
+        class TitleAnimator {
+            constructor(elementId) {
+                this.element = document.getElementById(elementId);
+                if (!this.element) return;
+                this.text = this.element.textContent;
+                this.init();
+            }
+
+            init() {
+                this.element.innerHTML = this.text.split('').map(char => 
+                    `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`
+                ).join('');
+                setTimeout(() => this.animate(), 500);
+            }
+
+            animate() {
+                const chars = this.element.querySelectorAll('.char');
+                chars.forEach((char, index) => {
+                    setTimeout(() => {
+                        char.classList.add('visible');
+                    }, index * 50);
+                });
+            }
+        }
+        
+        /* ═══════════════════════════════════════════════════════════════
+           APPLICATION INITIALIZATION
+           ═══════════════════════════════════════════════════════════════ */
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeManager = new ThemeManager();
+            themeManager.init();
+            new FormValidator(document.getElementById('loginForm'));
+            new PasswordToggle();
+            new MotionControl(themeManager);
+            new ParallaxEffect();
+            new TitleAnimator('loginTitle');
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') document.activeElement.blur();
+            });
+            console.log('✨ Seasonal login page initialized successfully!');
+        });
+    </script>
+</body>
+</html>
